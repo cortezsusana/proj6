@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,6 +24,9 @@ import javax.validation.constraints.Size;
  */
 @IdClass(LyricId.class)
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Lyric.findLyricByMusic&User", query = "SELECT l FROM Lyric l WHERE l.music = :music and l.appuser = :appuser")
+})
 public class Lyric implements Serializable {
 
     private static final long serialVersionUID = -8933754952599439717L;
@@ -43,7 +48,7 @@ public class Lyric implements Serializable {
     @ManyToOne
     private Music music;
 
-    @PrimaryKeyJoinColumn(name = "user_fk", referencedColumnName = "user_id")
+    @PrimaryKeyJoinColumn(name = "userId_fk", referencedColumnName = "user_id")
     @ManyToOne
     private AppUser appuser;
 

@@ -15,8 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import pt.uc.dei.aor.projeto4.grupog.WebService.ChartLyricSoap;
-import pt.uc.dei.aor.projeto4.grupog.WebService.LyricsWikiSoap;
 import pt.uc.dei.aor.projeto4.grupog.entities.Music;
 import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
 
@@ -32,16 +30,13 @@ public class WebServiceController {
     private String result;
     private boolean disable;
 
-    private ChartLyricSoap chartLyricSoap;
-    private LyricsWikiSoap lyricsWikiSoap;
-
     /**
      * Creates a new instance of WebServiceController
      */
     public WebServiceController() {
     }
-//---ChartLyric---
 
+    //---ChartLyric---
     public String getLyricSong(Music m) {
         GetLyricResult glr = searchLyricDirect(m.getArtist(), m.getTitle());
         return this.result = glr.getLyric();
@@ -102,14 +97,6 @@ public class WebServiceController {
 
     public void setMusicBB(RequestMusicMb musicBB) {
         this.musicBB = musicBB;
-    }
-
-    public ChartLyricSoap getChartLyricSoap() {
-        return chartLyricSoap;
-    }
-
-    public void setChartLyricSoap(ChartLyricSoap chartLyricSoap) {
-        this.chartLyricSoap = chartLyricSoap;
     }
 
     public boolean disable(Music m) {
