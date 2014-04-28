@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
 import com.LyricWiki.LyricWikiPortType_Stub;
@@ -11,6 +10,8 @@ import com.LyricWiki.LyricWiki_Impl;
 import com.LyricWiki.LyricsResult;
 import com.chartlyrics.api.GetLyricResult;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
@@ -30,6 +31,7 @@ public class WebServiceController {
 
     private RequestMusicMb musicBB;
     private String result;
+    private String webservice;
     private boolean disable;
 
     private ChartLyricSoap chartLyricSoap;
@@ -87,6 +89,18 @@ public class WebServiceController {
         return "no";
     }
 
+    /**
+     * Cria uma nova lista com os web services disponíveis.
+     *
+     * @return
+     */
+    public List<String> webservices() {
+        List<String> listweb = new ArrayList<>();
+        listweb.add("ChartLyric");
+        listweb.add("LyricWiki");
+        return listweb;
+    }
+
     //---GETTERS E SETTERS
     public String getResult() {
         return result;
@@ -110,6 +124,30 @@ public class WebServiceController {
 
     public void setChartLyricSoap(ChartLyricSoap chartLyricSoap) {
         this.chartLyricSoap = chartLyricSoap;
+    }
+
+    public String getWebservice() {
+        return webservice;
+    }
+
+    public void setWebservice(String webservice) {
+        this.webservice = webservice;
+    }
+
+    public boolean isDisable() {
+        return disable;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
+    }
+
+    public LyricsWikiSoap getLyricsWikiSoap() {
+        return lyricsWikiSoap;
+    }
+
+    public void setLyricsWikiSoap(LyricsWikiSoap lyricsWikiSoap) {
+        this.lyricsWikiSoap = lyricsWikiSoap;
     }
 
     public boolean disable(Music m) {
