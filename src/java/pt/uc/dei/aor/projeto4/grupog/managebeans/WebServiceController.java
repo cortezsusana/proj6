@@ -7,13 +7,19 @@
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
 import com.chartlyrics.api.GetLyricResult;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import pt.uc.dei.aor.projeto4.grupog.entities.Music;
 
 /**
  *
  * @author Bruno Maricatod
  */
+@Named
+@RequestScoped
 public class WebServiceController {
 
+    private RequestMusicMb musicBB;
     private String result;
 
     /**
@@ -24,6 +30,13 @@ public class WebServiceController {
 
     public boolean checkLyric(String artist, String song) {
         return !getLyricSong(artist, song).isEmpty();
+    }
+
+    public String buttonLyric(Music m) {
+        if (m.isLyricExist()) {
+            return "yes";
+        }
+        return "no";
     }
 
     public String getLyricSong(String artist, String song) {
