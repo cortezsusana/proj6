@@ -77,18 +77,30 @@ and open the template in the editor.
                                         <f:setPropertyActionListener target="#{generalController.musicSelected}" value="#{music}" />
                                     </h:commandButton>
                                 </h:column>
+
                                 <h:column>
                                     <f:facet name="header">Lyric</f:facet>
-                                    <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" />
+                                    <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" onclick="dialog1.show()" />
                                 </h:column>
 
                             </h:dataTable>
                             <br/>
                             <p></p>
-
                         </h:form>
                     </f:view>
+                </h:form>
+                <h:form>
+                    <p:dialog id="dialogLyric" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="100">  
+                        <h:outputText value="Please choose a webservice" />
+                        <p></p>
+                        <p:selectOneMenu>
+                            <f:selectItem itemLabel="Select One" itemValue="" />  
+                            <f:selectItems value="#{webServiceController.webservices()}" id="webservice" itemValue="#{webServiceController.webservice}"/>
+                        </p:selectOneMenu>
 
+
+                        <h:commandButton value ="Ok" action="/listAllMusics"/>
+                    </p:dialog>
                 </h:form>
             </ui:define>
         </ui:composition>
