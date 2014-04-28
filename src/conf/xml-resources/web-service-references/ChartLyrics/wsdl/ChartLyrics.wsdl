@@ -1,0 +1,380 @@
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://api.chartlyrics.com/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://api.chartlyrics.com/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"> 
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Chartlyrics API version 1.2</wsdl:documentation> 
+    <wsdl:types>
+        <s:schema targetNamespace="http://api.chartlyrics.com/" elementFormDefault="qualified"> 
+            <s:element name="SearchLyric"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="s:string" name="artist" maxOccurs="1" minOccurs="0"/> 
+                        <s:element type="s:string" name="song" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="SearchLyricResponse"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="tns:ArrayOfSearchLyricResult" name="SearchLyricResult" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:complexType name="ArrayOfSearchLyricResult"> 
+                <s:sequence> 
+                    <s:element type="tns:SearchLyricResult" name="SearchLyricResult" maxOccurs="unbounded" minOccurs="0" nillable="true"/> 
+                </s:sequence> 
+            </s:complexType> 
+            <s:complexType name="SearchLyricResult"> 
+                <s:sequence> 
+                    <s:element type="s:string" name="TrackChecksum" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:int" name="TrackId" maxOccurs="1" minOccurs="1"/> 
+                    <s:element type="s:string" name="LyricChecksum" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:int" name="LyricId" maxOccurs="1" minOccurs="1"/> 
+                    <s:element type="s:string" name="SongUrl" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="ArtistUrl" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="Artist" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="Song" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:int" name="SongRank" maxOccurs="1" minOccurs="1"/> 
+                </s:sequence> 
+            </s:complexType> 
+            <s:element name="SearchLyricText"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="s:string" name="lyricText" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="SearchLyricTextResponse"> <s:complexType> 
+                <s:sequence> 
+                        <s:element type="tns:ArrayOfSearchLyricResult" name="SearchLyricTextResult" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="GetLyric"> <s:complexType> <s:sequence> 
+                        <s:element type="s:int" name="lyricId" maxOccurs="1" minOccurs="1"/> 
+                        <s:element type="s:string" name="lyricCheckSum" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="GetLyricResponse"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="tns:GetLyricResult" name="GetLyricResult" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:complexType name="GetLyricResult"> 
+                <s:sequence> 
+                    <s:element type="s:string" name="TrackChecksum" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:int" name="TrackId" maxOccurs="1" minOccurs="1"/> 
+                    <s:element type="s:string" name="LyricChecksum" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:int" name="LyricId" maxOccurs="1" minOccurs="1"/> 
+                    <s:element type="s:string" name="LyricSong" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="LyricArtist" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="LyricUrl" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="LyricCovertArtUrl" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:int" name="LyricRank" maxOccurs="1" minOccurs="1"/> 
+                    <s:element type="s:string" name="LyricCorrectUrl" maxOccurs="1" minOccurs="0"/> 
+                    <s:element type="s:string" name="Lyric" maxOccurs="1" minOccurs="0"/> 
+                </s:sequence> 
+            </s:complexType> 
+            <s:element name="AddLyric"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="s:int" name="trackId" maxOccurs="1" minOccurs="1"/> 
+                        <s:element type="s:string" name="trackCheckSum" maxOccurs="1" minOccurs="0"/> 
+                        <s:element type="s:string" name="lyric" maxOccurs="1" minOccurs="0"/> 
+                        <s:element type="s:string" name="email" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="AddLyricResponse"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="s:string" name="AddLyricResult" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="SearchLyricDirect"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="s:string" name="artist" maxOccurs="1" minOccurs="0"/> 
+                        <s:element type="s:string" name="song" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element name="SearchLyricDirectResponse"> 
+                <s:complexType> 
+                    <s:sequence> 
+                        <s:element type="tns:GetLyricResult" name="SearchLyricDirectResult" maxOccurs="1" minOccurs="0"/> 
+                    </s:sequence> 
+                </s:complexType> 
+            </s:element> 
+            <s:element type="tns:ArrayOfSearchLyricResult" name="ArrayOfSearchLyricResult" nillable="true"/> 
+            <s:element type="tns:GetLyricResult" name="GetLyricResult" nillable="true"/> 
+            <s:element type="s:string" name="string" nillable="true"/> 
+        </s:schema> 
+    </wsdl:types> 
+    <wsdl:message name="SearchLyricSoapIn"> 
+        <wsdl:part name="parameters" element="tns:SearchLyric"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricSoapOut"> 
+        <wsdl:part name="parameters" element="tns:SearchLyricResponse"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricTextSoapIn"> 
+        <wsdl:part name="parameters" element="tns:SearchLyricText"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricTextSoapOut"> 
+        <wsdl:part name="parameters" element="tns:SearchLyricTextResponse"/> 
+    </wsdl:message> 
+    <wsdl:message name="GetLyricSoapIn"> 
+        <wsdl:part name="parameters" element="tns:GetLyric"/> 
+    </wsdl:message> 
+    <wsdl:message name="GetLyricSoapOut"> 
+        <wsdl:part name="parameters" element="tns:GetLyricResponse"/> 
+    </wsdl:message> 
+    <wsdl:message name="AddLyricSoapIn"> 
+        <wsdl:part name="parameters" element="tns:AddLyric"/> 
+    </wsdl:message> 
+    <wsdl:message name="AddLyricSoapOut"> 
+        <wsdl:part name="parameters" element="tns:AddLyricResponse"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricDirectSoapIn"> 
+        <wsdl:part name="parameters" element="tns:SearchLyricDirect"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricDirectSoapOut"> 
+        <wsdl:part name="parameters" element="tns:SearchLyricDirectResponse"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricHttpGetIn"> 
+        <wsdl:part type="s:string" name="artist"/> 
+        <wsdl:part type="s:string" name="song"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricHttpGetOut"> 
+        <wsdl:part name="Body" element="tns:ArrayOfSearchLyricResult"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricTextHttpGetIn"> 
+        <wsdl:part type="s:string" name="lyricText"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricTextHttpGetOut"> 
+        <wsdl:part name="Body" element="tns:ArrayOfSearchLyricResult"/> 
+    </wsdl:message> 
+    <wsdl:message name="GetLyricHttpGetIn"> 
+        <wsdl:part type="s:string" name="lyricId"/> 
+        <wsdl:part type="s:string" name="lyricCheckSum"/> 
+    </wsdl:message> 
+    <wsdl:message name="GetLyricHttpGetOut"> 
+        <wsdl:part name="Body" element="tns:GetLyricResult"/> 
+    </wsdl:message> 
+    <wsdl:message name="AddLyricHttpGetIn"> 
+        <wsdl:part type="s:string" name="trackId"/> 
+        <wsdl:part type="s:string" name="trackCheckSum"/> 
+        <wsdl:part type="s:string" name="lyric"/> 
+        <wsdl:part type="s:string" name="email"/> 
+    </wsdl:message> 
+    <wsdl:message name="AddLyricHttpGetOut"> 
+        <wsdl:part name="Body" element="tns:string"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricDirectHttpGetIn"> 
+        <wsdl:part type="s:string" name="artist"/> 
+        <wsdl:part type="s:string" name="song"/> 
+    </wsdl:message> 
+    <wsdl:message name="SearchLyricDirectHttpGetOut"> 
+        <wsdl:part name="Body" element="tns:GetLyricResult"/> 
+    </wsdl:message> 
+    <wsdl:portType name="apiv1Soap"> 
+        <wsdl:operation name="SearchLyric"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search for lyrics and return the lyricId and lyricChecksum for the GetLyric function</wsdl:documentation> 
+            <wsdl:input message="tns:SearchLyricSoapIn"/> 
+            <wsdl:output message="tns:SearchLyricSoapOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricText"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search for text in lyric and returns the lyricId and lyricChecksum for the GetLyric function</wsdl:documentation> 
+            <wsdl:input message="tns:SearchLyricTextSoapIn"/> 
+            <wsdl:output message="tns:SearchLyricTextSoapOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="GetLyric"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return lyric with lyric text, correction URL, Lyric rankigs and an URL to the album cover if applicable.</wsdl:documentation> 
+            <wsdl:input message="tns:GetLyricSoapIn"/> 
+            <wsdl:output message="tns:GetLyricSoapOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="AddLyric"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add lyric with lyric text and email.</wsdl:documentation> 
+            <wsdl:input message="tns:AddLyricSoapIn"/> 
+            <wsdl:output message="tns:AddLyricSoapOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricDirect"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search for lyrics by artist and track and directly returns the lyric or lyric add parameters.</wsdl:documentation> 
+            <wsdl:input message="tns:SearchLyricDirectSoapIn"/> 
+            <wsdl:output message="tns:SearchLyricDirectSoapOut"/> 
+        </wsdl:operation> 
+    </wsdl:portType> 
+    <wsdl:portType name="apiv1HttpGet"> 
+        <wsdl:operation name="SearchLyric"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search for lyrics and return the lyricId and lyricChecksum for the GetLyric function</wsdl:documentation> 
+            <wsdl:input message="tns:SearchLyricHttpGetIn"/> 
+            <wsdl:output message="tns:SearchLyricHttpGetOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricText"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search for text in lyric and returns the lyricId and lyricChecksum for the GetLyric function</wsdl:documentation> 
+            <wsdl:input message="tns:SearchLyricTextHttpGetIn"/> 
+            <wsdl:output message="tns:SearchLyricTextHttpGetOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="GetLyric"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return lyric with lyric text, correction URL, Lyric rankigs and an URL to the album cover if applicable.</wsdl:documentation> 
+            <wsdl:input message="tns:GetLyricHttpGetIn"/> 
+            <wsdl:output message="tns:GetLyricHttpGetOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="AddLyric"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add lyric with lyric text and email.</wsdl:documentation> 
+            <wsdl:input message="tns:AddLyricHttpGetIn"/> 
+            <wsdl:output message="tns:AddLyricHttpGetOut"/> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricDirect"> 
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search for lyrics by artist and track and directly returns the lyric or lyric add parameters.</wsdl:documentation> 
+            <wsdl:input message="tns:SearchLyricDirectHttpGetIn"/> 
+            <wsdl:output message="tns:SearchLyricDirectHttpGetOut"/> 
+        </wsdl:operation> 
+    </wsdl:portType> 
+    <wsdl:binding type="tns:apiv1Soap" name="apiv1Soap"> 
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/> <wsdl:operation name="SearchLyric"> 
+            <soap:operation style="document" soapAction="http://api.chartlyrics.com/SearchLyric"/> <wsdl:input> 
+                <soap:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricText"> 
+            <soap:operation style="document" soapAction="http://api.chartlyrics.com/SearchLyricText"/> <wsdl:input> 
+                <soap:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="GetLyric"> 
+            <soap:operation style="document" soapAction="http://api.chartlyrics.com/GetLyric"/> <wsdl:input> 
+                <soap:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="AddLyric"> 
+            <soap:operation style="document" soapAction="http://api.chartlyrics.com/AddLyric"/> <wsdl:input> 
+                <soap:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricDirect"> 
+            <soap:operation style="document" soapAction="http://api.chartlyrics.com/SearchLyricDirect"/> <wsdl:input> 
+                <soap:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+    </wsdl:binding> 
+    <wsdl:binding type="tns:apiv1Soap" name="apiv1Soap12"> 
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/> 
+        <wsdl:operation name="SearchLyric"> 
+            <soap12:operation style="document" soapAction="http://api.chartlyrics.com/SearchLyric"/> 
+            <wsdl:input> 
+                <soap12:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap12:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricText"> 
+            <soap12:operation style="document" soapAction="http://api.chartlyrics.com/SearchLyricText"/> 
+            <wsdl:input> 
+                <soap12:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap12:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="GetLyric"> 
+            <soap12:operation style="document" soapAction="http://api.chartlyrics.com/GetLyric"/> 
+            <wsdl:input> 
+                <soap12:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap12:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="AddLyric"> 
+            <soap12:operation style="document" soapAction="http://api.chartlyrics.com/AddLyric"/> 
+            <wsdl:input> 
+                <soap12:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap12:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricDirect"> 
+            <soap12:operation style="document" soapAction="http://api.chartlyrics.com/SearchLyricDirect"/> 
+            <wsdl:input> 
+                <soap12:body use="literal"/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <soap12:body use="literal"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+    </wsdl:binding> 
+    <wsdl:binding type="tns:apiv1HttpGet" name="apiv1HttpGet"> 
+        <http:binding verb="GET"/> 
+        <wsdl:operation name="SearchLyric"> 
+            <http:operation location="/SearchLyric"/> <wsdl:input> 
+                <http:urlEncoded/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <mime:mimeXml part="Body"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricText"> 
+            <http:operation location="/SearchLyricText"/> <wsdl:input> 
+                <http:urlEncoded/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <mime:mimeXml part="Body"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="GetLyric"> 
+            <http:operation location="/GetLyric"/> <wsdl:input> 
+                <http:urlEncoded/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <mime:mimeXml part="Body"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="AddLyric"> 
+            <http:operation location="/AddLyric"/> <wsdl:input> 
+                <http:urlEncoded/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <mime:mimeXml part="Body"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+        <wsdl:operation name="SearchLyricDirect"> 
+            <http:operation location="/SearchLyricDirect"/> <wsdl:input> 
+                <http:urlEncoded/> 
+            </wsdl:input> 
+            <wsdl:output> 
+                <mime:mimeXml part="Body"/> 
+            </wsdl:output> 
+        </wsdl:operation> 
+    </wsdl:binding> 
+    <wsdl:service name="apiv1"> 
+        <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Chartlyrics API version 1.2</wsdl:documentation> <wsdl:port name="apiv1Soap" binding="tns:apiv1Soap"> 
+            <soap:address location="http://api.chartlyrics.com/apiv1.asmx"/> 
+        </wsdl:port> 
+        <wsdl:port name="apiv1Soap12" binding="tns:apiv1Soap12"> 
+            <soap12:address location="http://api.chartlyrics.com/apiv1.asmx"/> 
+        </wsdl:port> 
+        <wsdl:port name="apiv1HttpGet" binding="tns:apiv1HttpGet"> 
+            <http:address location="http://api.chartlyrics.com/apiv1.asmx"/> 
+        </wsdl:port> 
+    </wsdl:service> 
+</wsdl:definitions>
