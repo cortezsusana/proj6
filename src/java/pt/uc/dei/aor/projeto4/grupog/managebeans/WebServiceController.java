@@ -10,7 +10,7 @@ import com.chartlyrics.api.GetLyricResult;
 
 /**
  *
- * @author Bruno Maricato
+ * @author Bruno Maricatod
  */
 public class WebServiceController {
 
