@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 
     <h:head>
@@ -76,9 +77,9 @@ and open the template in the editor.
                                         <f:setPropertyActionListener target="#{generalController.musicSelected}" value="#{music}" />
                                     </h:commandButton>
                                 </h:column>
-
                                 <h:column>
-                                    <h:commandButton image="resources/images/play.png" action="search.xhtml" class="playBtn"/>
+                                    <f:facet name="header">Lyric</f:facet>
+                                    <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" />
                                 </h:column>
 
                             </h:dataTable>

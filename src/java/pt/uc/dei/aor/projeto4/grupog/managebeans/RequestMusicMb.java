@@ -34,6 +34,8 @@ import pt.uc.dei.aor.projeto4.grupog.entities.Music;
 @RequestScoped
 public class RequestMusicMb implements Serializable {
 
+    private static final long serialVersionUID = 1477749338888991862L;
+
     @Inject
     private MusicFacade music_ejb;
     private DataModel<Music> items = null;
@@ -50,6 +52,9 @@ public class RequestMusicMb implements Serializable {
     private String url;
     private String urlTop;
     private List<Music> musics2;
+
+    @Inject
+    private WebServiceController webServiceController;
 
     /**
      * Creates a new instance of MusicMb
@@ -84,13 +89,13 @@ public class RequestMusicMb implements Serializable {
      * the byte[] to the new location path and invoke the method addMusic from
      * Music EJB, in order to add the music reference to the DB.
      *
+     * @return
      * @throws FileNotFoundException
      * @throws IOException
      */
     public String addMusic() throws FileNotFoundException, IOException {
 
         try {
-
             File file = new File("C:\\APPGetPlayWeb\\");
             file.mkdir();
             musicPath = "C:\\APPGetPlayWeb\\" + file1.getSubmittedFileName();
@@ -109,8 +114,8 @@ public class RequestMusicMb implements Serializable {
             }
             outputStream.close();
             inputStream.close();
+            music.setLyricExist(webServiceController.checkSongExists(music));
             music_ejb.addMusic(music, user.getUser(), musicPath);
-
             message = "Music " + music.getTitle() + " created with success.";
 
         } catch (FileNotFoundException ex) {
@@ -389,6 +394,22 @@ public class RequestMusicMb implements Serializable {
 
     public void setUrlTop(String urlTop) {
         this.urlTop = urlTop;
+    }
+
+    public GregorianCalendar getGc() {
+        return gc;
+    }
+
+    public void setGc(GregorianCalendar gc) {
+        this.gc = gc;
+    }
+
+    public WebServiceController getWebServiceController() {
+        return webServiceController;
+    }
+
+    public void setWebServiceController(WebServiceController webServiceController) {
+        this.webServiceController = webServiceController;
     }
 
 }
