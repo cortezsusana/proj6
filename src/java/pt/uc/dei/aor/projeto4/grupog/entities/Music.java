@@ -73,7 +73,7 @@ public class Music implements Serializable, Comparable<Music> {
     @ManyToMany(mappedBy = "musics")
     private List<Playlist> playlists;
 
-    @OneToMany(mappedBy = "music")
+    @OneToMany(mappedBy = "music", orphanRemoval = true)
     private List<Lyric> lyrics;
 
     private boolean lyricExist;

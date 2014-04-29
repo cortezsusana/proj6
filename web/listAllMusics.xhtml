@@ -79,7 +79,7 @@ and open the template in the editor.
                                 <f:facet name="header">Lyric</f:facet>
                                 <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" oncomplete="dialog1.show()" update=":d1"/>
                             </h:column>
-                            
+
                             <h:column>
                                 <f:facet name="header">UPDATE Lyrics</f:facet>
                                 <p:commandButton value="Chart SOAP" action="#{lyricController.chartLyricSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>
@@ -94,9 +94,9 @@ and open the template in the editor.
 
                     <p:dialog id="d1" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="400" width="400">  
                         <h:form>
-                            <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20"/> 
+                            <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20" cols="45"/> 
                             <p></p>
-                            <p:commandButton ajax="false" value ="SAVE" action="#{lyricController.save()}" />
+                            <p:commandButton ajax="false" value ="SAVE" action="#{lyricController.save()}"/>
                             <p:commandButton value ="OK" action="listAllMusics.xhtml" oncomplete="PF('dialog1').hide();" />
                         </h:form>
                     </p:dialog>

@@ -88,7 +88,6 @@ public class WebServiceController {
     }
 
     public String lyricRESTResult(Music m) {
-        Client client = ClientBuilder.newClient();
         this.result = client.target("http://lyrics.wikia.com/api.php")
                 .queryParam("func", "getSong")
                 .queryParam("artist", m.getArtist())
