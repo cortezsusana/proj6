@@ -167,36 +167,28 @@ public class LyricController {
     }
 
     public void chartLyricSOAP(Music m) {
-        if (!findLyric()) {
-            this.originalLyric = webServiceController.getLyricSong(m);
-            music = m;
-        }
+        this.originalLyric = webServiceController.getLyricSong(m);
+        music = m;
     }
 
     public void chartLyricREST(Music m) {
-        if (!findLyric()) {
-            //this.originalLyric = webServiceController.;
-            music = m;
-        }
+        this.originalLyric = webServiceController.songRESTResult(m);
+        music = m;
     }
 
     public void lyricWikiSOAP(Music m) {
-        if (!findLyric()) {
-            try {
-                this.originalLyric = webServiceController.songLyricWikiSOAP(m);
-                music = m;
-            } catch (RemoteException ex) {
-                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex.getMessage());
-            }
+        try {
+            this.originalLyric = webServiceController.songLyricWikiSOAP(m);
+            music = m;
+        } catch (RemoteException ex) {
+            Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
 
     public void lyricWikiREST(Music m) {
-        if (!findLyric()) {
-            this.originalLyric = webServiceController.lyricRESTResult(m);
-            music = m;
-        }
+        this.originalLyric = webServiceController.lyricRESTResult(m);
+        music = m;
     }
 
     public void save() {
