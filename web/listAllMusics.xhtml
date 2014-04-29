@@ -22,84 +22,87 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="Template/GetPlayTemp.xhtml">
             <ui:define name="content">
-                <h:form>
-                    <h1><h:outputText value="All Musics"/></h1>
-                    <h:outputLabel value="YOUR PLAYLIST´S:"/>
+                <f:view>
+                    <h:form>
+                        <h1><h:outputText value="All Musics"/></h1>
+                        <h:outputLabel value="YOUR PLAYLIST´S:"/>
 
-                    <h:selectOneMenu value="#{generalController.playlistSelected}" converter="#{generalController}">
-                        <f:selectItems value="#{generalController.myPlaylists()}" var="p" itemLabel="#{p.name}"/>
-                    </h:selectOneMenu>
+                        <h:selectOneMenu value="#{generalController.playlistSelected}" converter="#{generalController}">
+                            <f:selectItems value="#{generalController.myPlaylists()}" var="p" itemLabel="#{p.name}"/>
+                        </h:selectOneMenu>
 
-                    <h:dataTable value="#{requestMusicMb.musicList}" var="music" border="1" cellpadding="2" cellspacing="2" rules="all"
-                                 styleClass="dataTable"
-                                 headerClass="dataTableTitle">
-                        <h:column>
-                            <f:facet name="header" class="dataTableTitle">TITLE</f:facet>
-                                #{music.title}
-                        </h:column>
+                        <h:dataTable value="#{requestMusicMb.musicList}" var="music" border="1" cellpadding="2" cellspacing="2" rules="all" 
 
-                        <h:column>
-                            <f:facet name="header" class="dataTableTitle">ARTIST</f:facet>
-                                #{music.artist}
-                        </h:column>
+                                     styleClass="dataTable"
+                                     headerClass="dataTableTitle"
+                                     >
 
-                        <h:column>
-                            <f:facet name="header" class="dataTableTitle">ALBUM</f:facet>
-                                #{music.album}
-                        </h:column>
+                            <h:column>
 
-                        <h:column>
-                            <f:facet name="header" class="dataTableTitle">YEAR</f:facet>
-                                #{music.music_year}
-                        </h:column>
+                                <f:facet name="header" class="dataTableTitle">TITLE</f:facet>
+                                    #{music.title}
+                            </h:column>
 
-                        <h:column>
-                            <f:facet name="header" class="dataTableTitle">PATH</f:facet>
-                                #{music.music_path}
-                        </h:column>
+                            <h:column>
+                                <f:facet name="header" class="dataTableTitle">ARTIST</f:facet>
+                                    #{music.artist}
+                            </h:column>
 
-                        <h:column>
-                            <f:facet name="header" class="dataTableTitle">USER</f:facet>
-                                #{music.user.name}
-                        </h:column>
+                            <h:column>
+                                <f:facet name="header" class="dataTableTitle">ALBUM</f:facet>
+                                    #{music.album}
+                            </h:column>
 
-                        <h:column>      
-                            <f:facet name="header" class="dataTableTitle">ADD TO PLAYLIST</f:facet>
-                            <h:commandButton type="submit" value="+" action="#{generalController.saveMusic()}" >
-                                <f:setPropertyActionListener target="#{generalController.musicSelected}" value="#{music}" />
-                            </h:commandButton>
-                        </h:column>
+                            <h:column>
+                                <f:facet name="header" class="dataTableTitle">YEAR</f:facet>
+                                    #{music.music_year}
+                            </h:column>
 
-                        <h:column>
-                            <f:facet name="header">Lyric</f:facet>
-                            <p:commandButton id="showDialogButton" type="button" action="/listAllMusics.xhtml" value="Show" onclick="PF('dialog1').show()"/>
-                        </h:column>
-                    </h:dataTable>
-                    <br/>
-                    <p></p>
-                    <p:dialog id="dialogLyric" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="100">  
-                        <h:outputText value="Please choose a webservice" />
-                        <p></p>
-                        <p:selectOneMenu value="#{webServiceController.webservice}">
-                            <f:selectItem itemLabel="Select One" itemValue="" />  
-                            <f:selectItems value="#{webServiceController.listweb}" id="webservice" />
-                        </p:selectOneMenu>
+                            <h:column>
+                                <f:facet name="header" class="dataTableTitle">PATH</f:facet>
+                                    #{music.music_path}
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header" class="dataTableTitle">USER</f:facet>
+                                    #{music.user.name}
+                            </h:column>
+
+                            <h:column>      
+                                <f:facet name="header" class="dataTableTitle">ADD TO PLAYLIST</f:facet>
+                                <h:commandButton type="submit" value="+" action="#{generalController.saveMusic()}" >
+                                    <f:setPropertyActionListener target="#{generalController.musicSelected}" value="#{music}" />
+                                </h:commandButton>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Lyric</f:facet>
+                                <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" oncomplete="dialog1.show()" update=":d1"/>
+                            </h:column>
+
+                        </h:dataTable>
+                        <br/>
+                    </h:form>
+
+                    <p:dialog id="d1" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="100">  
                         <h:form>
+                            <h:outputText value="Please choose a webservice and a API" />
                             <p></p>
-                            <h:outputText value="Please choose a API" />
-                            <p></p>
-                            <p:commandButton value="SOAP" actionListener="#{webServiceController.viewResult(SOAP)}"/>
-                            <p:commandButton value="REST" actionListener="#{webServiceController.viewResult(REST)}"/>
+                            <p:commandButton value="LyricWiki SOAP" actionListener="#{webServiceController.viewResult(SOAP)}"/>
+                            <p:commandButton value="LyricWiki REST" actionListener="#{webServiceController.viewResult(REST)}"/>
+                            <p:commandButton value="ChartLyric SOAP" actionListener="#{webServiceController.viewResult(SOAP)}"/>
+                            <p:commandButton value="ChartLyic REST" actionListener="#{webServiceController.viewResult(REST)}"/>
                             <p></p>
                             <h:outputText value="Lyric:" />
                             <p></p>
-                            <p:inputTextarea  id="showlyric" value="#{webServiceController.result}" rows="20"/> 
+                            <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20"/> 
                             <p></p>
-                            <p:commandButton value ="Edit" action="/editLyric"/>
-                            <p:commandButton value ="Ok" action="/listAllMusics"/>
+                            <p:commandButton value ="Edit" action="#{lyricController.prepareEdit()}">
+                                <f:setPropertyActionListener target="#{lyricController.musicId}" value="#{music.id}" />
+                            <p:commandButton value ="Ok" action="listAllMusics.xhtml" />
                         </h:form>
                     </p:dialog>
-                </h:form>
+                </f:view>
             </ui:define>
         </ui:composition>
     </h:body>
