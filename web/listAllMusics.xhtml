@@ -31,7 +31,7 @@ and open the template in the editor.
                             <f:selectItems value="#{generalController.myPlaylists()}" var="p" itemLabel="#{p.name}"/>
                         </h:selectOneMenu>
 
-                        <h:dataTable value="#{requestMusicMb.musicList}" var="music" border="1" cellpadding="2" cellspacing="2" rules="all" 
+                        <h:dataTable id="dataTable" value="#{requestMusicMb.musicList}" var="music" border="1" cellpadding="2" cellspacing="2" rules="all" 
 
                                      styleClass="dataTable"
                                      headerClass="dataTableTitle"
@@ -78,7 +78,9 @@ and open the template in the editor.
                             <h:column>
                                 <f:facet name="header">Lyric</f:facet>
                                 <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" 
-                                                  action="#{lyricController.prepareEdit(music)}" oncomplete="dialog1.show()" update=":d1"/>
+                                                  action="#{lyricController.prepareEdit(music)}" oncomplete="dialog1.show()" update=":d1">
+                                    <p:ajax process="@this" update=":d1"/>
+                                </p:commandButton>
                             </h:column>
 
                             <h:column>

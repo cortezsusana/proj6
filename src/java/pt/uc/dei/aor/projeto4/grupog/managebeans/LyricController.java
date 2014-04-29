@@ -6,6 +6,7 @@
 
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +26,7 @@ import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
  */
 @Named(value = "lyricController")
 @ViewScoped
-public class LyricController {
+public class LyricController implements Serializable {
 
     @Inject
     private LyricFacade lyricFacade;
@@ -53,32 +54,6 @@ public class LyricController {
     @PostConstruct
     public void init() {
         this.lyric = new Lyric();
-    }
-
-    public boolean findLyric() {
-        try {
-            this.selectLyric = lyricFacade.findLyric(music, loggedUserMb.getUser());
-            return true;
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e.getMessage());
-        }
-        return false;
-    }
-
-    public void prepareEdit(Music m) {
-        if (m.getUser().equals(loggedUserMb.getUser()) && lyricFacade.existLyricUser(m, loggedUserMb.getUser())) {
-            try {
-                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
-                originalLyric = selectLyric.getTextLyric();
-                music = m;
-                update = true;
-            } catch (Exception ex) {
-                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else {
-            lyricWikiREST(m);
-        }
     }
 
     public LyricFacade getLyricFacade() {
@@ -186,7 +161,20 @@ public class LyricController {
         music = m;
     }
 
+    public void prepareEdit(Music m) {
+        if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
+            System.out.println(" AQUI !!!");
+            lyricWikiREST(m);
+        } else {
+            System.out.println("AQUI 9090");
+            this.originalLyric = lyricFacade.findLyric(m, loggedUserMb.getUser()).getTextLyric();
+            music = m;
+            update = true;
+        }
+    }
+
     public void save() {
+
         if (update) {
             try {
                 Lyric updatedLyric = lyricFacade.findLyric(music, loggedUserMb.getUser());
@@ -195,7 +183,7 @@ public class LyricController {
             } catch (Exception ex) {
                 Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (!findLyric()) {
+        } else if (!lyricFacade.existLyric(music, loggedUserMb.getUser())) {
             lyric = new Lyric();
             lyric.setAppuser(loggedUserMb.getUser());
             lyric.setMusic(music);

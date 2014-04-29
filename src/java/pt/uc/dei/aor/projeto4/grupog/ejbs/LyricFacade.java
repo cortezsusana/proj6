@@ -41,18 +41,27 @@ public class LyricFacade extends AbstractFacade<Lyric> {
             q.setParameter("music", music).setParameter("appuser", appUser);
             return q.getSingleResult();
         } catch (Exception e) {
-            throw new Exception(e.getCause().getMessage());
+            throw new Exception(e.getMessage());
         }
     }
 
-    public boolean existLyricUser(Music music, AppUser appUser) {
-        TypedQuery<Integer> q;
-        q = em.createNamedQuery("Lyric.findLyricByMusic&User", Integer.class);
-        q.setParameter("music", music).setParameter("appuser", appUser);
-        if (q.getSingleResult() == 1) {
+    public boolean existLyric(Music music, AppUser appUser) {
+        TypedQuery<Lyric> q;
+        q = em.createNamedQuery("Lyric.findLyricByMusic&User", Lyric.class);
+        try {
+            q.setParameter("music", music).setParameter("appuser", appUser);
             return true;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
+    }
+
+    public boolean existUserLyric(Music music, AppUser appUser) {
+        TypedQuery<Integer> q;
+        q = em.createNamedQuery("Lyric.existLyric", Integer.class);
+        q.setParameter("music", music).setParameter("appuser", appUser);
+        int i = q.getSingleResult();
+        return i == 1;
     }
 
     public void editLyric(Lyric lyric) {
@@ -75,5 +84,4 @@ public class LyricFacade extends AbstractFacade<Lyric> {
         }
 
     }
-
 }

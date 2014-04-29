@@ -144,11 +144,9 @@ public class RequestMusicMb implements Serializable {
      * @return DataModel<Music>
      */
     public DataModel<Music> getMusicList() {
-
         List<Music> list = music_ejb.findAll();
         DataModel model = (DataModel<Music>) new ListDataModel(list);
         musics = model;
-
         return musics;
     }
 
