@@ -7,7 +7,7 @@
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import pt.uc.dei.aor.projeto4.grupog.ejbs.LyricFacade;
@@ -21,7 +21,7 @@ import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
  * @author Elsa Susana
  */
 @Named(value = "lyricController")
-@RequestScoped
+@ViewScoped
 public class LyricController {
 
     @Inject
@@ -67,10 +67,9 @@ public class LyricController {
         lyricFacade.create(lyric);
     }
 
-    public String prepareEdit() {
-        if (music.getUser().equals(loggedUserMb.getUser())) {
-            this.musicId = music.getId();
-
+    public String prepareEdit(Music m) {
+        if (m.getUser().equals(loggedUserMb.getUser())) {
+            this.music = m;
             return "editLyric";
         } else {
             JsfUtil.addErrorMessage("You don´t have permission to change this music");
