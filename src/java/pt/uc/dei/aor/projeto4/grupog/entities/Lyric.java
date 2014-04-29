@@ -40,11 +40,9 @@ public class Lyric implements Serializable {
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String textLyric;
 
-    //@PrimaryKeyJoinColumn(name = "music_fk", referencedColumnName = "music_id")
     @ManyToOne
     private Music music;
 
-    //@PrimaryKeyJoinColumn(name = "userId_fk", referencedColumnName = "user_id")
     @ManyToOne
     private AppUser appuser;
 
