@@ -34,6 +34,7 @@ public class WebServiceController {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/ChartLyrics.wsdl")
     private com.chartlyrics.api.Apiv1 service;
 
+    @Inject
     private RequestMusicMb musicBB;
     private String webservice;
     private Music m;
