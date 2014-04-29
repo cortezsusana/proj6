@@ -58,7 +58,7 @@ public class AppUser implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Playlist> playlists;
 
-    @OneToMany(mappedBy = "appuser")
+    @OneToMany(mappedBy = "appuser", orphanRemoval = true)
     private List<Lyric> lyrics;
 
     public AppUser() {
