@@ -207,7 +207,7 @@ public class LyricController {
             lyric.setTextLyric(originalLyric);
             lyricFacade.create(lyric);
         } else {
-            JsfUtil.addSuccessMessage("You already have a lyric og this music");
+            JsfUtil.addSuccessMessage("You already have a lyric of this music");
         }
     }
 }
