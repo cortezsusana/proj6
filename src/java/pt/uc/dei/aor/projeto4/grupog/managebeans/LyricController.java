@@ -192,6 +192,13 @@ public class LyricController {
         }
     }
 
+    public void lyricWikiREST(Music m) {
+        if (!findLyric()) {
+            this.originalLyric = webServiceController.lyricRESTResult(m);
+            music = m;
+        }
+    }
+
     public void save() {
         if (!findLyric()) {
             lyric = new Lyric();
