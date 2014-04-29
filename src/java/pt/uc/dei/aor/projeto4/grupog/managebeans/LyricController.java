@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
 import java.io.Serializable;
@@ -161,7 +160,7 @@ public class LyricController implements Serializable {
         music = m;
     }
 
-    public void prepareEdit(Music m) {
+    public void prepareEdit(Music m) throws Exception {
         if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
             System.out.println(" AQUI !!!");
             lyricWikiREST(m);
