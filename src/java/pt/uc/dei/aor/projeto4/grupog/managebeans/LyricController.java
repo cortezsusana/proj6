@@ -171,4 +171,13 @@ public class LyricController {
         this.originalLyric = webServiceController.getLyricSong(music);
         return null;
     }
+
+    public Integer getMusicId() {
+        return musicId;
+    }
+
+    public void setMusicId(Integer musicId) {
+        this.musicId = musicId;
+    }
+
 }

@@ -121,9 +121,14 @@ public class WebServiceController {
         if (api == "SOAP" && webservice == "ChartLyric") {
             getLyricSong(music);
         }
-//        if (api == "SOAP" && webservice == "LyricWiki") {
-//            songLyric(music.getArtist(), music.getTitle());
-//        }
+        if (api == "SOAP" && webservice == "LyricWiki") {
+            songLyricWikiSOAP(music);
+        }
+        return result;
+    }
+
+    //---GETTERS E SETTERS
+    public String getResult() {
         return result;
     }
 
@@ -199,10 +204,6 @@ public class WebServiceController {
 
     public void setGeneralController(GeneralController generalController) {
         this.generalController = generalController;
-    }
-
-    public String getResult() {
-        return result;
     }
 
     public void setResult(String result) {
