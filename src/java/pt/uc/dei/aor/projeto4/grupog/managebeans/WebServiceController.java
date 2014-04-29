@@ -61,7 +61,7 @@ public class WebServiceController {
     //---ChartLyric---
     public String getLyricSong(Music m) {
         GetLyricResult glr = searchLyricDirect(m.getArtist(), m.getTitle());
-        return glr.getLyric();
+        return this.result = glr.getLyric();
     }
 
     private com.chartlyrics.api.GetLyricResult searchLyricDirect(java.lang.String artist, java.lang.String song) {
@@ -75,7 +75,7 @@ public class WebServiceController {
     public String songLyricWikiSOAP(Music m) throws RemoteException {
         LyricWikiPortType_Stub lw = createProxy();
         LyricsResult lr = lw.getSong(m.getArtist(), m.getTitle());
-        return lr.getLyrics();
+        return this.result = lr.getLyrics();
     }
 
     private static LyricWikiPortType_Stub createProxy() {
@@ -103,28 +103,6 @@ public class WebServiceController {
             Logger.getLogger(WebServiceController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "no";
-    }
-
-    /**
-     * Cria uma nova lista com os web services disponíveis.
-     *
-     * @return
-     */
-    public List<String> webservices() {
-        List<String> listweb = new ArrayList<>();
-        listweb.add("ChartLyric");
-        listweb.add("LyricWiki");
-        return listweb;
-    }
-
-    public String viewResult(String api) throws RemoteException {
-        if (api == "SOAP" && webservice == "ChartLyric") {
-            getLyricSong(music);
-        }
-        if (api == "SOAP" && webservice == "LyricWiki") {
-            songLyricWikiSOAP(music);
-        }
-        return result;
     }
 
     //---GETTERS E SETTERS
