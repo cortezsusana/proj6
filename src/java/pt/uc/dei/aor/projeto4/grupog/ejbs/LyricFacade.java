@@ -6,6 +6,7 @@
 
 package pt.uc.dei.aor.projeto4.grupog.ejbs;
 
+import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,6 +43,37 @@ public class LyricFacade extends AbstractFacade<Lyric> {
         } catch (Exception e) {
             throw new Exception(e.getCause().getMessage());
         }
+    }
+
+    public boolean existLyricUser(Music music, AppUser appUser) {
+        TypedQuery<Integer> q;
+        q = em.createNamedQuery("Lyric.findLyricByMusic&User", Integer.class);
+        q.setParameter("music", music).setParameter("appuser", appUser);
+        if (q.getSingleResult() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public void editLyric(Lyric lyric) {
+        getEntityManager().merge(lyric);
+        AppUser appUser = lyric.getAppuser();
+        Music m = lyric.getMusic();
+        //vai à tabela AppUser e actualiza a lista de lyrics
+        for (Lyric l : appUser.getLyrics()) {
+            if (Objects.equals(l.getAppuser().getUser_id(), appUser.getUser_id())) {
+                l.setTextLyric(lyric.getTextLyric());
+                getEntityManager().merge(appUser);
+            }
+        }
+        //vai à tabela Music e actualiza a lista de lyrics
+        for (Lyric l : m.getLyrics()) {
+            if (Objects.equals(l.getMusic().getMusic_id(), m.getMusic_id())) {
+                l.setTextLyric(lyric.getTextLyric());
+                getEntityManager().merge(m);
+            }
+        }
+
     }
 
 }

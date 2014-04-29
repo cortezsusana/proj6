@@ -77,7 +77,8 @@ and open the template in the editor.
 
                             <h:column>
                                 <f:facet name="header">Lyric</f:facet>
-                                <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" oncomplete="dialog1.show()" update=":d1"/>
+                                <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" 
+                                                  action="#{lyricController.prepareEdit(music)}" oncomplete="dialog1.show()" update=":d1"/>
                             </h:column>
                             
                             <h:column>
@@ -94,10 +95,17 @@ and open the template in the editor.
 
                     <p:dialog id="d1" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="400" width="400">  
                         <h:form>
-                            <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20"/> 
-                            <p></p>
-                            <p:commandButton ajax="false" value ="SAVE" action="#{lyricController.save()}" />
-                            <p:commandButton value ="OK" action="listAllMusics.xhtml" oncomplete="PF('dialog1').hide();" />
+                            <h:panelGrid columns="2" >
+                                <h:outputLabel value="#{lyricController.music.artist} | #{lyricController.music.title}"/>  
+                                <h:outputLabel value=" "/>
+                                
+                                <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20" widgetVar=""/> 
+                                <h:outputLabel value=" "/>
+                                
+                                <p:commandButton value ="RETURN" action="listAllMusics.xhtml" oncomplete="PF('dialog1').hide();" />
+                                <p:commandButton ajax="false" value ="SAVE" action="#{lyricController.save()}" />
+                                
+                            </h:panelGrid>
                         </h:form>
                     </p:dialog>
                 </f:view>

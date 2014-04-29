@@ -38,10 +38,11 @@ public class LyricController {
     @Inject
     private WebServiceController webServiceController;
 
-    private Lyric lyric, selectLyric, updatedLyric;
+    private Lyric lyric, selectLyric;
     private String originalLyric;
     private Music music;
     private Integer musicId;
+    private boolean update;
 
     /**
      * Creates a new instance of LyricController
@@ -64,18 +65,20 @@ public class LyricController {
         return false;
     }
 
-    public String prepareEdit(Music m) {
-        if (m.getUser().equals(loggedUserMb.getUser())) {
-            this.music = m;
-            return "editLyric";
+    public void prepareEdit(Music m) {
+        if (m.getUser().equals(loggedUserMb.getUser()) && lyricFacade.existLyricUser(m, loggedUserMb.getUser())) {
+            try {
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                originalLyric = selectLyric.getTextLyric();
+                music = m;
+                update = true;
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         } else {
-            JsfUtil.addErrorMessage("You don´t have permission to change this music");
-            return null;
+            lyricWikiREST(m);
         }
-    }
-
-    public void editLyric() {
-
     }
 
     public LyricFacade getLyricFacade() {
@@ -124,14 +127,6 @@ public class LyricController {
 
     public void setWebServiceController(WebServiceController webServiceController) {
         this.webServiceController = webServiceController;
-    }
-
-    public Lyric getUpdatedLyric() {
-        return updatedLyric;
-    }
-
-    public void setUpdatedLyric(Lyric updatedLyric) {
-        this.updatedLyric = updatedLyric;
     }
 
     public String getOriginalLyric() {
@@ -192,7 +187,15 @@ public class LyricController {
     }
 
     public void save() {
-        if (!findLyric()) {
+        if (update) {
+            try {
+                Lyric updatedLyric = lyricFacade.findLyric(music, loggedUserMb.getUser());
+                updatedLyric.setTextLyric(originalLyric);
+                lyricFacade.editLyric(lyric);
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (!findLyric()) {
             lyric = new Lyric();
             lyric.setAppuser(loggedUserMb.getUser());
             lyric.setMusic(music);

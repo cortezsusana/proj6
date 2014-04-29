@@ -24,7 +24,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Lyric.findLyricByMusic&User", query = "SELECT l FROM Lyric l WHERE l.music = :music and l.appuser = :appuser")
+    @NamedQuery(name = "Lyric.findLyricByMusic&User", query = "SELECT l FROM Lyric l WHERE l.music = :music and l.appuser = :appuser"),
+    @NamedQuery(name = "Lyric.existLyric", query = "SELECT COUNT(l) FROM Lyric l WHERE l.music = :music and l.appuser = :appuser")
 })
 public class Lyric implements Serializable {
 

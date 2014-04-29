@@ -88,7 +88,6 @@ public class WebServiceController {
     }
 
     public String lyricRESTResult(Music m) {
-        Client client = ClientBuilder.newClient();
         this.result = client.target("http://lyrics.wikia.com/api.php")
                 .queryParam("func", "getSong")
                 .queryParam("artist", m.getArtist())
@@ -103,7 +102,7 @@ public class WebServiceController {
         return (LyricWikiPortType_Stub) (new LyricWiki_Impl().getLyricWikiPort());
     }
 
-    public boolean checkSongExists(Music m) throws RemoteException {
+    public boolean checkSongExists(Music m) {
         boolean existSong = false;
         try {
             LyricWikiPortType_Stub lwpts = createProxy();
@@ -116,16 +115,12 @@ public class WebServiceController {
     }
 
     public String buttonLyric(Music m) {
-        try {
-            if (m.isLyricExist()) {
-                return "LYRIC";
-            } else if (checkSongExists(m)) {
-                return "LYRIC";
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(WebServiceController.class.getName()).log(Level.SEVERE, null, ex);
+        if (m.isLyricExist()) {
+            return "LYRIC";
+        } else if (checkSongExists(m)) {
+            return "LYRIC";
         }
-        return "no letter";
+        return "NO LYRIC";
     }
 
     //---GETTERS E SETTERS
@@ -167,12 +162,7 @@ public class WebServiceController {
     }
 
     public boolean disable(Music m) {
-        try {
-            return !checkSongExists(m);
-        } catch (RemoteException ex) {
-            Logger.getLogger(WebServiceController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+        return !checkSongExists(m);
     }
 
     public Apiv1 getService() {
