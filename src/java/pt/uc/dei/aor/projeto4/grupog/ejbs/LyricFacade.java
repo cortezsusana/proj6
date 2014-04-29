@@ -50,6 +50,7 @@ public class LyricFacade extends AbstractFacade<Lyric> {
         q = em.createNamedQuery("Lyric.findLyricByMusic&User", Lyric.class);
         try {
             q.setParameter("music", music).setParameter("appuser", appUser);
+            q.getSingleResult();
             return true;
         } catch (Exception e) {
             return false;
