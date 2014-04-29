@@ -78,6 +78,10 @@ and open the template in the editor.
                             <h:column>
                                 <f:facet name="header">Lyric</f:facet>
                                 <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" oncomplete="dialog1.show()" update=":d1"/>
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">UPDATE Lyrics</f:facet>
                                 <p:commandButton value="Chart SOAP" action="#{lyricController.chartLyricSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>
                                 <p:commandButton value="Chart REST" action="#{lyricController.chartLyricREST(music)}"/>
                                 <p:commandButton value="Lyric SOAP" action="#{lyricController.lyricWikiSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>

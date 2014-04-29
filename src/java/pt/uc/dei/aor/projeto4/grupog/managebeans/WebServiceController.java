@@ -71,7 +71,6 @@ public class WebServiceController {
     }
 
     public String songRESTResult(Music m) {
-
         this.result = client.target("http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect")
                 .queryParam("artist", m.getArtist())
                 .queryParam("song", m.getTitle())
