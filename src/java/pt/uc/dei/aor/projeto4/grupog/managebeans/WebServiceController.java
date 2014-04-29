@@ -11,14 +11,15 @@ import com.LyricWiki.LyricsResult;
 import com.chartlyrics.api.Apiv1;
 import com.chartlyrics.api.GetLyricResult;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
 import javax.xml.ws.WebServiceRef;
 import pt.uc.dei.aor.projeto4.grupog.entities.Music;
 
@@ -35,11 +36,11 @@ public class WebServiceController {
 
     private RequestMusicMb musicBB;
     private String webservice;
-    private List<String> listweb;
     private Music m;
     private boolean disable;
     private Music music;
     private String result;
+    private Client client;
 
     @Inject
     private GeneralController generalController;
@@ -52,10 +53,8 @@ public class WebServiceController {
 
     @PostConstruct
     public void init() {
-        this.listweb = new ArrayList<>();
-        listweb.add("ChartLyric");
-        listweb.add("LyricWiki");
-
+        result = "";
+        client = ClientBuilder.newClient();
     }
 
     //---ChartLyric---
@@ -71,11 +70,33 @@ public class WebServiceController {
         return port.searchLyricDirect(artist, song);
     }
 
+    public String songRESTResult(Music m) {
+
+        this.result = client.target("http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect")
+                .queryParam("artist", m.getArtist())
+                .queryParam("song", m.getTitle())
+                .request(MediaType.TEXT_PLAIN)
+                .get(String.class);
+        return result;
+    }
+
     //---LyricWiki---
     public String songLyricWikiSOAP(Music m) throws RemoteException {
         LyricWikiPortType_Stub lw = createProxy();
         LyricsResult lr = lw.getSong(m.getArtist(), m.getTitle());
         return this.result = lr.getLyrics();
+    }
+
+    public String lyricRESTResult(Music m) {
+        Client client = ClientBuilder.newClient();
+        result = client.target("http://lyrics.wikia.com/api.php")
+                .queryParam("func", "getSong")
+                .queryParam("artist", m.getArtist())
+                .queryParam("song", m.getTitle())
+                .queryParam("fmt", "text")
+                .request(MediaType.TEXT_PLAIN)
+                .get(String.class);
+        return result;
     }
 
     private static LyricWikiPortType_Stub createProxy() {
@@ -158,14 +179,6 @@ public class WebServiceController {
 
     public void setService(Apiv1 service) {
         this.service = service;
-    }
-
-    public List<String> getListweb() {
-        return listweb;
-    }
-
-    public void setListweb(List<String> listweb) {
-        this.listweb = listweb;
     }
 
     public Music getM() {
