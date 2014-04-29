@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <ui:insert name="metadata"/>
         <f:event type="preRenderView" listener="#{loginMb.verifyUser()}" />
@@ -20,15 +21,23 @@ and open the template in the editor.
             <ui:define name="content">
 
                 <h:form>
-                    <h:panelGrid columns="3" cellspacing="10">
-                        <h:outputLabel value="#{editMusicController.musicSelected.artist}"/>
-                        <h:outputLabel value="|"/>
-                        <h:outputLabel value="#{editMusicController.musicSelected.title}"/>
+                    <h:panelGrid columns="4" cellspacing="10">
+                        <h:outputLabel id="artist" value="Artist"/>
+                        <h:inputText value="#{lyricController.music.artist}"/>
+                        <h:outputLabel id="title" value="#{lyricController.music.title}"/>
+                        <h:inputText value="#{lyricController.music.title}"/>
+                        <h:outputText value=" "/>
+                        <h:outputText value=" "/>
                         
-                        <h:inputTextarea value=""
+                        <h:commandButton value="ChartLyric SOAP" action="#{lyricController.chartLyricSOAP()}" />
+                        <h:commandButton value="ChartLyric REST" action="#{lyricController.chartLyricREST()}" />
+                        <h:commandButton value="LyricWiki SOAP" action="#{lyricController.lyricWikiSOAP()}" />
+                        <h:commandButton value="LyricWiki REST" action="#{lyricController.lyricWikiSOAP()}" />
+                        
+                        <h:inputTextarea id="showLyric" value="#{lyricController.result}" rows="10" style="width: 300px" />
 
                         <p></p>
-                        <h:commandButton type="submit"  value="Save" action="#{editMusicController.editLyric}"  />
+                        <h:commandButton type="submit"  value="Save" action="#{lyricController.editLyric()}"  />
                     </h:panelGrid>
                 </h:form>
 

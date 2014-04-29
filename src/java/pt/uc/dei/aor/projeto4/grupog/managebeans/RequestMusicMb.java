@@ -117,7 +117,7 @@ public class RequestMusicMb implements Serializable {
             music.setLyricExist(webServiceController.checkSongExists(music));
             music_ejb.addMusic(music, user.getUser(), musicPath);
             message = "Music " + music.getTitle() + " created with success.";
-
+            return "listMyMusics";
         } catch (FileNotFoundException ex) {
             System.err.println(ex.getMessage());
             message = "File not found. Please try again";
@@ -125,7 +125,7 @@ public class RequestMusicMb implements Serializable {
         } catch (IOException ex2) {
             System.err.println(ex2.getMessage());
         }
-        return "createMusic";
+        return null;
     }
 
     /**

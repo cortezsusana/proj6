@@ -8,16 +8,19 @@ package pt.uc.dei.aor.projeto4.grupog.managebeans;
 import com.LyricWiki.LyricWikiPortType_Stub;
 import com.LyricWiki.LyricWiki_Impl;
 import com.LyricWiki.LyricsResult;
+import com.chartlyrics.api.Apiv1;
 import com.chartlyrics.api.GetLyricResult;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.ws.WebServiceRef;
 import pt.uc.dei.aor.projeto4.grupog.entities.Music;
-import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
 
 /**
  *
@@ -27,10 +30,17 @@ import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
 @RequestScoped
 public class WebServiceController {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/ChartLyrics.wsdl")
+    private com.chartlyrics.api.Apiv1 service;
+
     private RequestMusicMb musicBB;
-    private String result;
     private String webservice;
+    private List<String> listweb;
+    private Music m;
     private boolean disable;
+
+    @Inject
+    private GeneralController generalController;
 
     /**
      * Creates a new instance of WebServiceController
@@ -38,22 +48,31 @@ public class WebServiceController {
     public WebServiceController() {
     }
 
+    @PostConstruct
+    public void init() {
+        this.listweb = new ArrayList<>();
+        listweb.add("ChartLyric");
+        listweb.add("LyricWiki");
+
+    }
+
     //---ChartLyric---
     public String getLyricSong(Music m) {
         GetLyricResult glr = searchLyricDirect(m.getArtist(), m.getTitle());
-        return this.result = glr.getLyric();
+        return glr.getLyric();
     }
 
-    private static GetLyricResult searchLyricDirect(java.lang.String artist, java.lang.String song) {
-        com.chartlyrics.api.Apiv1 service = new com.chartlyrics.api.Apiv1();
+    private com.chartlyrics.api.GetLyricResult searchLyricDirect(java.lang.String artist, java.lang.String song) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
         com.chartlyrics.api.Apiv1Soap port = service.getApiv1Soap();
         return port.searchLyricDirect(artist, song);
     }
 
     //---LyricWiki---
-    public String songLyric(String artist, String song) throws RemoteException {
+    public String songLyricWikiSOAP(Music m) throws RemoteException {
         LyricWikiPortType_Stub lw = createProxy();
-        LyricsResult lr = lw.getSong(artist, song);
+        LyricsResult lr = lw.getSong(m.getArtist(), m.getTitle());
         return lr.getLyrics();
     }
 
@@ -66,9 +85,9 @@ public class WebServiceController {
         try {
             LyricWikiPortType_Stub lwpts = createProxy();
             existSong = lwpts.checkSongExists(m.getArtist(), m.getTitle());
+            return existSong;
         } catch (RemoteException ex) {
             Logger.getLogger(WebServiceController.class.getName()).log(Level.SEVERE, null, ex);
-            JsfUtil.addErrorMessage(ex.getMessage());
         }
         return existSong;
     }
@@ -89,22 +108,13 @@ public class WebServiceController {
      *
      * @return
      */
-    public List<String> webservices() {
-        List<String> listweb = new ArrayList<>();
-        listweb.add("ChartLyric");
-        listweb.add("LyricWiki");
-        return listweb;
-    }
-
+//    public List<String> webservices() {
+//        List<String> listweb = new ArrayList<>();
+//        listweb.add("ChartLyric");
+//        listweb.add("LyricWiki");
+//        return listweb;
+//    }
     //---GETTERS E SETTERS
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
     public RequestMusicMb getMusicBB() {
         return musicBB;
     }
@@ -129,14 +139,6 @@ public class WebServiceController {
         this.disable = disable;
     }
 
-    public LyricsWikiSoap getLyricsWikiSoap() {
-        return lyricsWikiSoap;
-    }
-
-    public void setLyricsWikiSoap(LyricsWikiSoap lyricsWikiSoap) {
-        this.lyricsWikiSoap = lyricsWikiSoap;
-    }
-
     public boolean disable(Music m) {
         try {
             return !checkSongExists(m);
@@ -145,4 +147,37 @@ public class WebServiceController {
         }
         return false;
     }
+
+    public Apiv1 getService() {
+        return service;
+    }
+
+    public void setService(Apiv1 service) {
+        this.service = service;
+    }
+
+    public List<String> getListweb() {
+        return listweb;
+    }
+
+    public void setListweb(List<String> listweb) {
+        this.listweb = listweb;
+    }
+
+    public Music getM() {
+        return m;
+    }
+
+    public void setM(Music m) {
+        this.m = m;
+    }
+
+    public GeneralController getGeneralController() {
+        return generalController;
+    }
+
+    public void setGeneralController(GeneralController generalController) {
+        this.generalController = generalController;
+    }
+
 }

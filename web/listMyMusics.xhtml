@@ -8,8 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
     <h:head>
@@ -87,7 +87,13 @@ and open the template in the editor.
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">Lyric</f:facet>
-                                    <p:commandButton disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}"/>
+                                    <p:commandButton disabled="#{webServiceController.disable(music)}" 
+                                                     value="#{webServiceController.buttonLyric(music)}"/>
+                                    <h:commandButton type="submit" 
+                                                     value="Edit Lyric" 
+                                                     action="#{lyricController.prepareEdit()}" >
+                                        <f:setPropertyActionListener target="#{lyricController.music}" value="#{music}" />
+                                    </h:commandButton>
                                 </h:column>
                             </h:dataTable>
                             <br/>

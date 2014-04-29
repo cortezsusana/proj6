@@ -6,23 +6,38 @@
 
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
-import javax.faces.view.ViewScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import pt.uc.dei.aor.projeto4.grupog.ejbs.LyricFacade;
+import pt.uc.dei.aor.projeto4.grupog.ejbs.MusicFacade;
 import pt.uc.dei.aor.projeto4.grupog.entities.Lyric;
+import pt.uc.dei.aor.projeto4.grupog.entities.Music;
+import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
 
 /**
  *
  * @author Elsa Susana
  */
 @Named(value = "lyricController")
-@ViewScoped
+@RequestScoped
 public class LyricController {
 
     @Inject
     private LyricFacade lyricFacade;
-    private Lyric lyric;
+    @Inject
+    private MusicFacade musicFacade;
+    @Inject
+    private LoggedUserMb loggedUserMb;
+    @Inject
+    private GeneralController generalController;
+    @Inject
+    private WebServiceController webServiceController;
+
+    private Lyric lyric, selectLyric, updatedLyric;
+    private String result;
+    private Music music;
 
     /**
      * Creates a new instance of LyricController
@@ -30,12 +45,27 @@ public class LyricController {
     public LyricController() {
     }
 
+    @PostConstruct
     public void init() {
         this.lyric = new Lyric();
     }
 
-    public void prepareEdit() {
+    public boolean findLyric() {
+        try {
+            this.selectLyric = lyricFacade.findLyric(generalController.getMusicSelected(), loggedUserMb.getUser());
+            return true;
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e.getMessage());
+        }
+        return false;
+    }
 
+    public String prepareEdit() {
+        if (!music.getUser().equals(loggedUserMb.getUser())) {
+            JsfUtil.addErrorMessage("You don´t have permission to change this music");
+            return null;
+        }
+        return "editLyric";
     }
 
     public void editLyric() {
@@ -56,6 +86,75 @@ public class LyricController {
 
     public void setLyric(Lyric lyric) {
         this.lyric = lyric;
+    }
+
+    public Lyric getSelectLyric() {
+        return selectLyric;
+    }
+
+    public void setSelectLyric(Lyric selectLyric) {
+        this.selectLyric = selectLyric;
+    }
+
+    public LoggedUserMb getLoggedUserMb() {
+        return loggedUserMb;
+    }
+
+    public void setLoggedUserMb(LoggedUserMb loggedUserMb) {
+        this.loggedUserMb = loggedUserMb;
+    }
+
+    public GeneralController getGeneralController() {
+        return generalController;
+    }
+
+    public void setGeneralController(GeneralController generalController) {
+        this.generalController = generalController;
+    }
+
+    public WebServiceController getWebServiceController() {
+        return webServiceController;
+    }
+
+    public void setWebServiceController(WebServiceController webServiceController) {
+        this.webServiceController = webServiceController;
+    }
+
+    public Lyric getUpdatedLyric() {
+        return updatedLyric;
+    }
+
+    public void setUpdatedLyric(Lyric updatedLyric) {
+        this.updatedLyric = updatedLyric;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String chartLyricSOAP() {
+        this.result = webServiceController.getLyricSong(music);
+        return null;
+    }
+
+    public Music getMusic() {
+        return music;
+    }
+
+    public void setMusic(Music music) {
+        this.music = music;
+    }
+
+    public MusicFacade getMusicFacade() {
+        return musicFacade;
+    }
+
+    public void setMusicFacade(MusicFacade musicFacade) {
+        this.musicFacade = musicFacade;
     }
 
 }
