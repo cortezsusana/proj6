@@ -24,10 +24,10 @@ and open the template in the editor.
                 <h:form>
                     <h:panelGrid columns="4" cellspacing="10">
                         <h:outputLabel id="artistLabel" value="artist"/>
-                        <h:inputText id="artist" value="#{requestMusicMb.music.artist}" disabled="true"/>
+                        <h:inputText id="artist" value="#{lyricController.music.artist}" disabled="true"/>
                      
                         <h:outputLabel id="titleLabel" value="title"/>
-                        <h:inputText id="title" value="#{requestMusicMb.music.title}" disabled="true"/>
+                        <h:inputText id="title" value="#{lyricController.music.title}" disabled="true"/>
                         
                         <h:commandButton value="ChartLyric SOAP" action="#{lyricController.chartLyricSOAP()}" >
                             <f:ajax execute="artist title" render="showLyric"/>

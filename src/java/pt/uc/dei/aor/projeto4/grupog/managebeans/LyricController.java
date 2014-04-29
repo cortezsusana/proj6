@@ -6,8 +6,11 @@
 
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import pt.uc.dei.aor.projeto4.grupog.ejbs.LyricFacade;
@@ -21,7 +24,7 @@ import pt.uc.dei.aor.projeto4.grupog.jsf.util.JsfUtil;
  * @author Elsa Susana
  */
 @Named(value = "lyricController")
-@RequestScoped
+@ViewScoped
 public class LyricController {
 
     @Inject
@@ -53,7 +56,7 @@ public class LyricController {
 
     public boolean findLyric() {
         try {
-            this.selectLyric = lyricFacade.findLyric(generalController.getMusicSelected(), loggedUserMb.getUser());
+            this.selectLyric = lyricFacade.findLyric(music, loggedUserMb.getUser());
             return true;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e.getMessage());
@@ -61,16 +64,9 @@ public class LyricController {
         return false;
     }
 
-    public void createLyric() {
-        lyric.setTextLyric(originalLyric);
-        lyric.setAppuser(loggedUserMb.getUser());
-        lyricFacade.create(lyric);
-    }
-
-    public String prepareEdit() {
-        if (music.getUser().equals(loggedUserMb.getUser())) {
-            this.musicId = music.getId();
-
+    public String prepareEdit(Music m) {
+        if (m.getUser().equals(loggedUserMb.getUser())) {
+            this.music = m;
             return "editLyric";
         } else {
             JsfUtil.addErrorMessage("You don´t have permission to change this music");
@@ -79,11 +75,7 @@ public class LyricController {
     }
 
     public void editLyric() {
-        if (!findLyric()) {
-            lyric.setTextLyric(originalLyric);
-            lyric.setAppuser(loggedUserMb.getUser());
-            lyricFacade.create(lyric);
-        }
+
     }
 
     public LyricFacade getLyricFacade() {
@@ -166,12 +158,6 @@ public class LyricController {
         this.musicFacade = musicFacade;
     }
 
-    public String chartLyricSOAP() {
-        this.music = musicFacade.find(musicId);
-        this.originalLyric = webServiceController.getLyricSong(music);
-        return null;
-    }
-
     public Integer getMusicId() {
         return musicId;
     }
@@ -180,4 +166,41 @@ public class LyricController {
         this.musicId = musicId;
     }
 
+    public void chartLyricSOAP(Music m) {
+        if (!findLyric()) {
+            this.originalLyric = webServiceController.getLyricSong(m);
+            music = m;
+        }
+    }
+
+    public void chartLyricREST(Music m) {
+        if (!findLyric()) {
+            //this.originalLyric = webServiceController.;
+            music = m;
+        }
+    }
+
+    public void lyricWikiSOAP(Music m) {
+        if (!findLyric()) {
+            try {
+                this.originalLyric = webServiceController.songLyricWikiSOAP(m);
+                music = m;
+            } catch (RemoteException ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+                JsfUtil.addErrorMessage(ex.getMessage());
+            }
+        }
+    }
+
+    public void save() {
+        if (!findLyric()) {
+            lyric = new Lyric();
+            lyric.setAppuser(loggedUserMb.getUser());
+            lyric.setMusic(music);
+            lyric.setTextLyric(originalLyric);
+            lyricFacade.create(lyric);
+        } else {
+            JsfUtil.addSuccessMessage("You already have a lyric og this music");
+        }
+    }
 }

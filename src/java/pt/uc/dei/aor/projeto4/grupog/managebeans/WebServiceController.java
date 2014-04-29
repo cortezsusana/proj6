@@ -117,13 +117,15 @@ public class WebServiceController {
 
     public String buttonLyric(Music m) {
         try {
-            if (checkSongExists(m)) {
-                return "yes";
+            if (m.isLyricExist()) {
+                return "LYRIC";
+            } else if (checkSongExists(m)) {
+                return "LYRIC";
             }
         } catch (RemoteException ex) {
             Logger.getLogger(WebServiceController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "no";
+        return "no letter";
     }
 
     //---GETTERS E SETTERS
