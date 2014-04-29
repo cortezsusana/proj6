@@ -165,14 +165,6 @@ public class WebServiceController {
         this.music = music;
     }
 
-    public Music getMusic() {
-        return music;
-    }
-
-    public void setMusic(Music music) {
-        this.music = music;
-    }
-
     public boolean disable(Music m) {
         try {
             return !checkSongExists(m);
