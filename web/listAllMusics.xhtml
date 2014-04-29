@@ -80,28 +80,40 @@ and open the template in the editor.
 
                                 <h:column>
                                     <f:facet name="header">Lyric</f:facet>
-                                    <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" onclick="dialog1.show()" />
+                                    <p:commandButton id="showDialog" type="button" disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" actionListener="#{webServiceController.music}" oncomplete="dialog1.show()" update=":d1"/>
                                 </h:column>
 
                             </h:dataTable>
                             <br/>
                             <p></p>
+                            
                         </h:form>
                     </f:view>
                 </h:form>
-                <h:form>
-                    <p:dialog id="dialogLyric" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="100">  
+
+                <p:dialog id="d1" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="100">  
+                    <h:form>
                         <h:outputText value="Please choose a webservice" />
                         <p></p>
                         <p:selectOneMenu>
-                            <f:selectItem itemLabel="Select One" itemValue="" />  
+                            <f:selectItem itemLabel="Select One"/>  
                             <f:selectItems value="#{webServiceController.webservices()}" id="webservice" itemValue="#{webServiceController.webservice}"/>
                         </p:selectOneMenu>
+                        <p></p>
+                        <h:outputText value="Please choose a API" />
+                        <p></p>
+                        <p:commandButton value="SOAP" actionListener="#{webServiceController.viewResult(SOAP)}"/>
+                        <p:commandButton value="REST" actionListener="#{webServiceController.viewResult(REST)}"/>
+                        <p></p>
+                        <h:outputText value="Lyric:" />
+                        <p></p>
+                        <p:inputTextarea  id="showlyric" value="#{webServiceController.result}" rows="20"/> 
+                        <p></p>
+                        <p:commandButton value ="Edit" action="/editLyric"/>
+                        <p:commandButton value ="Ok" action="/listAllMusics"/>
+                    </h:form>
+                </p:dialog>
 
-
-                        <h:commandButton value ="Ok" action="/listAllMusics"/>
-                    </p:dialog>
-                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>

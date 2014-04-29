@@ -33,6 +33,7 @@ public class WebServiceController {
     private String result;
     private String webservice;
     private boolean disable;
+    private Music music;
 
     private ChartLyricSoap chartLyricSoap;
     private LyricsWikiSoap lyricsWikiSoap;
@@ -101,6 +102,16 @@ public class WebServiceController {
         return listweb;
     }
 
+    public String viewResult(String api) throws RemoteException {
+        if (api == "SOAP" && webservice == "ChartLyric") {
+            getLyricSong(music);
+        }
+        if (api == "SOAP" && webservice == "LyricWiki") {
+            songLyric(music.getArtist(), music.getTitle());
+        }
+        return result;
+    }
+
     //---GETTERS E SETTERS
     public String getResult() {
         return result;
@@ -148,6 +159,14 @@ public class WebServiceController {
 
     public void setLyricsWikiSoap(LyricsWikiSoap lyricsWikiSoap) {
         this.lyricsWikiSoap = lyricsWikiSoap;
+    }
+
+    public Music getMusic() {
+        return music;
+    }
+
+    public void setMusic(Music music) {
+        this.music = music;
     }
 
     public boolean disable(Music m) {
