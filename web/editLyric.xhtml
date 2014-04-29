@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <ui:insert name="metadata"/>
         <f:event type="preRenderView" listener="#{loginMb.verifyUser()}" />
@@ -22,22 +23,26 @@ and open the template in the editor.
 
                 <h:form>
                     <h:panelGrid columns="4" cellspacing="10">
-                        <h:outputLabel id="artist" value="Artist"/>
-                        <h:inputText value="#{lyricController.music.artist}"/>
-                        <h:outputLabel id="title" value="#{lyricController.music.title}"/>
-                        <h:inputText value="#{lyricController.music.title}"/>
-                        <h:outputText value=" "/>
-                        <h:outputText value=" "/>
+                        <h:outputLabel id="artistLabel" value="artist"/>
+                        <h:inputText id="artist" value="#{requestMusicMb.music.artist}" disabled="true"/>
+                     
+                        <h:outputLabel id="titleLabel" value="title"/>
+                        <h:inputText id="title" value="#{requestMusicMb.music.title}" disabled="true"/>
                         
-                        <h:commandButton value="ChartLyric SOAP" action="#{lyricController.chartLyricSOAP()}" />
+                        <h:commandButton value="ChartLyric SOAP" action="#{lyricController.chartLyricSOAP()}" >
+                            <f:ajax execute="artist title" render="showLyric"/>
+                        </h:commandButton>
                         <h:commandButton value="ChartLyric REST" action="#{lyricController.chartLyricREST()}" />
+                        
                         <h:commandButton value="LyricWiki SOAP" action="#{lyricController.lyricWikiSOAP()}" />
                         <h:commandButton value="LyricWiki REST" action="#{lyricController.lyricWikiSOAP()}" />
                         
-                        <h:inputTextarea id="showLyric" value="#{lyricController.result}" rows="10" style="width: 300px" />
+                        <h:inputTextarea id="showLyric" value="#{lyricController.originalLyric}" rows="10" style="width: 200px" />
+                        <h:outputText value=""/>
 
                         <p></p>
-                        <h:commandButton type="submit"  value="Save" action="#{lyricController.editLyric()}"  />
+                        <h:commandButton value="Save" action="#{lyricController.createLyric()}"  />
+                        <h:commandButton value="Save" action="#{lyricController.editLyric()}"  />
                     </h:panelGrid>
                 </h:form>
 

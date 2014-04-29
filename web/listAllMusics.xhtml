@@ -9,7 +9,7 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-          
+
       xmlns:p="http://primefaces.org/ui">
 
 
@@ -72,10 +72,7 @@ and open the template in the editor.
 
                         <h:column>
                             <f:facet name="header">Lyric</f:facet>
-                            <p:commandButton id="showDialogButton" type="button" action="/listAllMusics.xhtml" value="Show" onclick="PF('dlg').show()"/>
-                            <p:dialog id="showDialog" header="Confirm Lyric" widgetVar="dlg">  
-                                <h:outputText value="Please choose a webservice" />
-                            </p:dialog>
+                            <p:commandButton id="showDialogButton" type="button" action="/listAllMusics.xhtml" value="Show" onclick="PF('dialog1').show()"/>
                         </h:column>
                     </h:dataTable>
                     <br/>
@@ -87,6 +84,20 @@ and open the template in the editor.
                             <f:selectItem itemLabel="Select One" itemValue="" />  
                             <f:selectItems value="#{webServiceController.listweb}" id="webservice" />
                         </p:selectOneMenu>
+                        <h:form>
+                            <p></p>
+                            <h:outputText value="Please choose a API" />
+                            <p></p>
+                            <p:commandButton value="SOAP" actionListener="#{webServiceController.viewResult(SOAP)}"/>
+                            <p:commandButton value="REST" actionListener="#{webServiceController.viewResult(REST)}"/>
+                            <p></p>
+                            <h:outputText value="Lyric:" />
+                            <p></p>
+                            <p:inputTextarea  id="showlyric" value="#{webServiceController.result}" rows="20"/> 
+                            <p></p>
+                            <p:commandButton value ="Edit" action="/editLyric"/>
+                            <p:commandButton value ="Ok" action="/listAllMusics"/>
+                        </h:form>
                     </p:dialog>
                 </h:form>
             </ui:define>

@@ -36,8 +36,9 @@ public class LyricController {
     private WebServiceController webServiceController;
 
     private Lyric lyric, selectLyric, updatedLyric;
-    private String result;
+    private String originalLyric;
     private Music music;
+    private Integer musicId;
 
     /**
      * Creates a new instance of LyricController
@@ -60,16 +61,29 @@ public class LyricController {
         return false;
     }
 
+    public void createLyric() {
+        lyric.setTextLyric(originalLyric);
+        lyric.setAppuser(loggedUserMb.getUser());
+        lyricFacade.create(lyric);
+    }
+
     public String prepareEdit() {
-        if (!music.getUser().equals(loggedUserMb.getUser())) {
+        if (music.getUser().equals(loggedUserMb.getUser())) {
+            this.musicId = music.getId();
+
+            return "editLyric";
+        } else {
             JsfUtil.addErrorMessage("You don´t have permission to change this music");
             return null;
         }
-        return "editLyric";
     }
 
     public void editLyric() {
-
+        if (!findLyric()) {
+            lyric.setTextLyric(originalLyric);
+            lyric.setAppuser(loggedUserMb.getUser());
+            lyricFacade.create(lyric);
+        }
     }
 
     public LyricFacade getLyricFacade() {
@@ -128,17 +142,12 @@ public class LyricController {
         this.updatedLyric = updatedLyric;
     }
 
-    public String getResult() {
-        return result;
+    public String getOriginalLyric() {
+        return originalLyric;
     }
 
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public String chartLyricSOAP() {
-        this.result = webServiceController.getLyricSong(music);
-        return null;
+    public void setOriginalLyric(String originalLyric) {
+        this.originalLyric = originalLyric;
     }
 
     public Music getMusic() {
@@ -157,4 +166,9 @@ public class LyricController {
         this.musicFacade = musicFacade;
     }
 
+    public String chartLyricSOAP() {
+        this.music = musicFacade.find(musicId);
+        this.originalLyric = webServiceController.getLyricSong(music);
+        return null;
+    }
 }

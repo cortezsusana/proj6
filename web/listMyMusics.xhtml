@@ -89,10 +89,10 @@ and open the template in the editor.
                                     <f:facet name="header">Lyric</f:facet>
                                     <p:commandButton disabled="#{webServiceController.disable(music)}" 
                                                      value="#{webServiceController.buttonLyric(music)}"/>
-                                    <h:commandButton type="submit" 
-                                                     value="Edit Lyric" 
-                                                     action="#{lyricController.prepareEdit()}" >
-                                        <f:setPropertyActionListener target="#{lyricController.music}" value="#{music}" />
+                                    
+                                    <h:commandButton value="edit lyric" 
+                                                     action="#{lyricController.prepareEdit()}">
+                                        <f:setPropertyActionListener target="#{lyricController.music}" value="#{music}"/>
                                     </h:commandButton>
                                 </h:column>
                             </h:dataTable>

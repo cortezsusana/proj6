@@ -38,6 +38,8 @@ public class WebServiceController {
     private List<String> listweb;
     private Music m;
     private boolean disable;
+    private Music music;
+    private String result;
 
     @Inject
     private GeneralController generalController;
@@ -108,12 +110,23 @@ public class WebServiceController {
      *
      * @return
      */
-//    public List<String> webservices() {
-//        List<String> listweb = new ArrayList<>();
-//        listweb.add("ChartLyric");
-//        listweb.add("LyricWiki");
-//        return listweb;
-//    }
+    public List<String> webservices() {
+        List<String> listweb = new ArrayList<>();
+        listweb.add("ChartLyric");
+        listweb.add("LyricWiki");
+        return listweb;
+    }
+
+    public String viewResult(String api) throws RemoteException {
+        if (api == "SOAP" && webservice == "ChartLyric") {
+            getLyricSong(music);
+        }
+//        if (api == "SOAP" && webservice == "LyricWiki") {
+//            songLyric(music.getArtist(), music.getTitle());
+//        }
+        return result;
+    }
+
     //---GETTERS E SETTERS
     public RequestMusicMb getMusicBB() {
         return musicBB;
@@ -137,6 +150,14 @@ public class WebServiceController {
 
     public void setDisable(boolean disable) {
         this.disable = disable;
+    }
+
+    public Music getMusic() {
+        return music;
+    }
+
+    public void setMusic(Music music) {
+        this.music = music;
     }
 
     public boolean disable(Music m) {
@@ -178,6 +199,14 @@ public class WebServiceController {
 
     public void setGeneralController(GeneralController generalController) {
         this.generalController = generalController;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 
 }
