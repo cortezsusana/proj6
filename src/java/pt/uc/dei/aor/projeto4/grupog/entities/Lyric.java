@@ -9,12 +9,12 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,7 +22,6 @@ import javax.validation.constraints.Size;
  *
  * @author Elsa
  */
-@IdClass(LyricId.class)
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Lyric.findLyricByMusic&User", query = "SELECT l FROM Lyric l WHERE l.music = :music and l.appuser = :appuser")
@@ -30,13 +29,10 @@ import javax.validation.constraints.Size;
 public class Lyric implements Serializable {
 
     private static final long serialVersionUID = -8933754952599439717L;
-    @Id
-    @Column(name = "userId_fk")
-    private Integer user_id;
 
     @Id
-    @Column(name = "music_fk")
-    private Integer music_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long lyric_id;
 
     @NotNull
     @Basic(optional = false)
@@ -44,31 +40,23 @@ public class Lyric implements Serializable {
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String textLyric;
 
-    @PrimaryKeyJoinColumn(name = "music_fk", referencedColumnName = "music_id")
+    //@PrimaryKeyJoinColumn(name = "music_fk", referencedColumnName = "music_id")
     @ManyToOne
     private Music music;
 
-    @PrimaryKeyJoinColumn(name = "userId_fk", referencedColumnName = "user_id")
+    //@PrimaryKeyJoinColumn(name = "userId_fk", referencedColumnName = "user_id")
     @ManyToOne
     private AppUser appuser;
 
     public Lyric() {
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Long getLyric_id() {
+        return lyric_id;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
-    public Integer getMusic_id() {
-        return music_id;
-    }
-
-    public void setMusic_id(Integer music_id) {
-        this.music_id = music_id;
+    public void setLyric_id(Long lyric_id) {
+        this.lyric_id = lyric_id;
     }
 
     public String getTextLyric() {
@@ -97,6 +85,7 @@ public class Lyric implements Serializable {
 
     @Override
     public String toString() {
-        return "pt.uc.dei.ar.proj4.grupog.entities.Lyric[ userplay_id=" + user_id + "music_id=" + music_id + " ]";
+        return "Lyric{" + "lyric_id=" + lyric_id + ", textLyric=" + textLyric + ", music=" + music + ", appuser=" + appuser + '}';
     }
+
 }
