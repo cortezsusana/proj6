@@ -166,10 +166,14 @@ public class LyricController implements Serializable {
             System.out.println(" AQUI !!!");
             lyricWikiREST(m);
         } else {
-            System.out.println("AQUI 9090");
-            this.originalLyric = lyricFacade.findLyric(m, loggedUserMb.getUser()).getTextLyric();
-            music = m;
-            update = true;
+            try {
+                System.out.println("AQUI 9090");
+                this.originalLyric = lyricFacade.findLyric(m, loggedUserMb.getUser()).getTextLyric();
+                music = m;
+                update = true;
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
