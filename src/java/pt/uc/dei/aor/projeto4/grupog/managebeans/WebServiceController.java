@@ -10,6 +10,8 @@ import com.LyricWiki.LyricWiki_Impl;
 import com.LyricWiki.LyricsResult;
 import com.chartlyrics.api.Apiv1;
 import com.chartlyrics.api.GetLyricResult;
+import java.io.IOException;
+import java.io.StringReader;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +22,16 @@ import javax.inject.Named;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.WebServiceRef;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import pt.uc.dei.aor.projeto4.grupog.entities.Music;
 
 /**
@@ -76,12 +87,24 @@ public class WebServiceController {
         return port.searchLyricDirect(artist, song);
     }
 
-    public String songRESTResult(Music m) {
+    public String songRESTResult(Music m) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         this.result = client.target("http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect")
                 .queryParam("artist", m.getArtist())
                 .queryParam("song", m.getTitle())
                 .request(MediaType.TEXT_PLAIN)
                 .get(String.class);
+
+        InputSource source = new InputSource(new StringReader(result));
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(source);
+
+        XPathFactory xpathFactory = XPathFactory.newInstance();
+        XPath xpath = xpathFactory.newXPath();
+
+        result = xpath.evaluate("/GetLyricResult/Lyric", document);
+
         if (!result.isEmpty()) {
             return result;
         } else {
