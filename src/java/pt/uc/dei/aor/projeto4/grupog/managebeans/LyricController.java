@@ -137,28 +137,77 @@ public class LyricController implements Serializable {
     }
 
     public void chartLyricSOAP(Music m) {
-        this.originalLyric = webServiceController.getLyricSong(m);
-        music = m;
+        if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
+            this.originalLyric = webServiceController.getLyricSong(m);
+            music = m;
+            update = false;
+        } else {
+            try {
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                this.originalLyric = webServiceController.getLyricSong(m);
+                music = m;
+                update = true;
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public void chartLyricREST(Music m) {
-        this.originalLyric = webServiceController.songRESTResult(m);
-        music = m;
+        if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
+            this.originalLyric = webServiceController.songRESTResult(m);
+            music = m;
+            update = false;
+        } else {
+            try {
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                this.originalLyric = webServiceController.songRESTResult(m);
+                music = m;
+                update = true;
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public void lyricWikiSOAP(Music m) {
-        try {
-            this.originalLyric = webServiceController.songLyricWikiSOAP(m);
-            music = m;
-        } catch (RemoteException ex) {
-            Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
-            JsfUtil.addErrorMessage(ex.getMessage());
+        if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
+            try {
+                this.originalLyric = webServiceController.songLyricWikiSOAP(m);
+                music = m;
+                update = false;
+            } catch (RemoteException ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                this.originalLyric = webServiceController.songLyricWikiSOAP(m);
+                music = m;
+                update = true;
+            } catch (RemoteException ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public void lyricWikiREST(Music m) {
-        this.originalLyric = webServiceController.lyricRESTResult(m);
-        music = m;
+        if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
+            this.originalLyric = webServiceController.lyricRESTResult(m);
+            music = m;
+            update = false;
+        } else {
+            try {
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                this.originalLyric = webServiceController.lyricRESTResult(m);
+                music = m;
+                update = true;
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public void prepareEdit(Music m) {
@@ -193,4 +242,5 @@ public class LyricController implements Serializable {
         }
         update = false;
     }
+
 }
