@@ -83,6 +83,5 @@ public class LyricFacade extends AbstractFacade<Lyric> {
                 getEntityManager().merge(m);
             }
         }
-
     }
 }
