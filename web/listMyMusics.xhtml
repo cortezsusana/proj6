@@ -86,7 +86,7 @@ and open the template in the editor.
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Lyric</f:facet>
+                                <f:facet name="header">LYRIC</f:facet>
                                 <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" 
                                                   action="#{lyricController.prepareEdit(music)}" oncomplete="dialog1.show()" update=":d1">
                                     <p:ajax process="@this" update=":d1"/>
@@ -104,7 +104,7 @@ and open the template in the editor.
                                 <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20" widgetVar=""/> 
                                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
 
-                                <p:commandButton value ="RETURN" action="listAllMusics.xhtml" oncomplete="PF('dialog1').hide();" />
+                                <p:commandButton value ="RETURN" action="listMyMusics.xhtml" oncomplete="PF('dialog1').hide();" />
                                 <p:commandButton ajax="false" value ="SAVE" action="#{lyricController.save()}" />
                             </h:panelGrid>
                         </h:form>
