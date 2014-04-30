@@ -95,14 +95,14 @@ and open the template in the editor.
                         <br/>
                     </h:form>
 
-                    <p:dialog id="d1" header="Confirm Lyric" widgetVar="dialog1" modal="true" height="400" width="400">  
+                    <p:dialog id="d1"  header="MyLYRIC" widgetVar="dialog1" modal="true" height="400" width="400">  
                         <h:form>
                             <h:panelGrid columns="2" >
                                 <h:outputLabel value="#{lyricController.music.artist} | #{lyricController.music.title}"/>  
                                 <h:outputLabel value=" "/>
                                 
                                 <p:inputTextarea  id="showlyric" value="#{lyricController.originalLyric}" rows="20" widgetVar=""/> 
-                                <h:outputLabel value=" "/>
+                                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                                 
                                 <p:commandButton value ="RETURN" action="listAllMusics.xhtml" oncomplete="PF('dialog1').hide();" />
                                 <p:commandButton ajax="false" value ="SAVE" action="#{lyricController.save()}" />

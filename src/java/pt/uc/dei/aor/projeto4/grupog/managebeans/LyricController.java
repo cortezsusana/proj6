@@ -163,38 +163,34 @@ public class LyricController implements Serializable {
 
     public void prepareEdit(Music m) {
         if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
-            System.out.println(" AQUI !!!");
             lyricWikiREST(m);
+            update = false;
         } else {
             try {
-                System.out.println("AQUI 9090");
-                this.originalLyric = lyricFacade.findLyric(m, loggedUserMb.getUser()).getTextLyric();
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                this.originalLyric = selectLyric.getTextLyric();
                 music = m;
                 update = true;
             } catch (Exception ex) {
                 Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+                JsfUtil.addErrorMessage("No original lyric available! ");
             }
         }
     }
 
     public void save() {
-
         if (update) {
-            try {
-                Lyric updatedLyric = lyricFacade.findLyric(music, loggedUserMb.getUser());
-                updatedLyric.setTextLyric(originalLyric);
-                lyricFacade.editLyric(lyric);
-            } catch (Exception ex) {
-                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (!lyricFacade.existLyric(music, loggedUserMb.getUser())) {
+            Lyric updatedLyric = selectLyric;
+            updatedLyric.setTextLyric(originalLyric);
+            lyricFacade.editLyric(updatedLyric);
+
+        } else {
             lyric = new Lyric();
             lyric.setAppuser(loggedUserMb.getUser());
             lyric.setMusic(music);
             lyric.setTextLyric(originalLyric);
             lyricFacade.create(lyric);
-        } else {
-            JsfUtil.addSuccessMessage("You already have a lyric of this music");
         }
+        update = false;
     }
 }
