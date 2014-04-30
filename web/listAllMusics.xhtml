@@ -76,7 +76,7 @@ and open the template in the editor.
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Lyric</f:facet>
+                                <f:facet name="header">LYRIC</f:facet>
                                 <p:commandButton  disabled="#{webServiceController.disable(music)}" value="#{webServiceController.buttonLyric(music)}" 
                                                   action="#{lyricController.prepareEdit(music)}" oncomplete="dialog1.show()" update=":d1">
                                     <p:ajax process="@this" update=":d1"/>
@@ -84,7 +84,7 @@ and open the template in the editor.
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">UPDATE Lyrics</f:facet>
+                                <f:facet name="header">UPDATE LYRICS</f:facet>
                                 <p:commandButton value="Chart SOAP" action="#{lyricController.chartLyricSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>
                                 <p:commandButton value="Chart REST" action="#{lyricController.chartLyricREST(music)}" oncomplete="dialog1.show()" update=":d1"/>
                                 <p:commandButton value="Lyric SOAP" action="#{lyricController.lyricWikiSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>

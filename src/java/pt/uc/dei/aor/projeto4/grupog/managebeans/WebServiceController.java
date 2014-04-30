@@ -61,7 +61,12 @@ public class WebServiceController {
     //---ChartLyric---
     public String getLyricSong(Music m) {
         GetLyricResult glr = searchLyricDirect(m.getArtist(), m.getTitle());
-        return this.result = glr.getLyric();
+        this.result = glr.getLyric();
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            return "Not Found";
+        }
     }
 
     private com.chartlyrics.api.GetLyricResult searchLyricDirect(java.lang.String artist, java.lang.String song) {
@@ -77,7 +82,11 @@ public class WebServiceController {
                 .queryParam("song", m.getTitle())
                 .request(MediaType.TEXT_PLAIN)
                 .get(String.class);
-        return result;
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            return "Not Found";
+        }
     }
 
     //---LyricWiki---
@@ -128,7 +137,6 @@ public class WebServiceController {
         return result;
     }
 
-    //---GETTERS E SETTERS
     public RequestMusicMb getMusicBB() {
         return musicBB;
     }
