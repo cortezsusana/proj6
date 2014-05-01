@@ -5,6 +5,7 @@
  */
 package pt.uc.dei.aor.projeto4.grupog.managebeans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -13,6 +14,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import org.xml.sax.SAXException;
 import pt.uc.dei.aor.projeto4.grupog.ejbs.LyricFacade;
 import pt.uc.dei.aor.projeto4.grupog.ejbs.MusicFacade;
 import pt.uc.dei.aor.projeto4.grupog.entities.Lyric;
@@ -135,15 +139,70 @@ public class LyricController implements Serializable {
         this.musicId = musicId;
     }
 
-    public void chartLyricSOAP(Music m) {
+    public void webServiceSOAP(Music m, String func) {
         if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
-            this.originalLyric = webServiceController.getLyricSong(m);
+            switch (func) {
+                case "chartLyric":
+                    this.originalLyric = webServiceController.getLyricSong(m);
+                    break;
+                case "LikiWiki": {
+                    try {
+                        this.originalLyric = webServiceController.songLyricWikiSOAP(m);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+            }
             music = m;
             update = false;
         } else {
             try {
                 this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
-                this.originalLyric = webServiceController.getLyricSong(m);
+                switch (func) {
+                    case "chartLyric":
+                        this.originalLyric = webServiceController.getLyricSong(m);
+                        break;
+                    case "LikiWiki":
+                        this.originalLyric = webServiceController.songLyricWikiSOAP(m);
+                        break;
+                }
+                music = m;
+                update = true;
+            } catch (Exception ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void webServiceREST(Music m, String func) {
+        if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
+            switch (func) {
+                case "chartLyric":
+                    try {
+                        this.originalLyric = webServiceController.songRESTResult(m);
+                    } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
+                        Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case "LikiWiki":
+                    this.originalLyric = webServiceController.lyricRESTResult(m);
+                    break;
+
+            }
+            music = m;
+            update = false;
+        } else {
+            try {
+                this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());
+                switch (func) {
+                    case "chartLyric":
+                        this.originalLyric = webServiceController.songRESTResult(m);
+                        break;
+                    case "LikiWiki":
+                        this.originalLyric = webServiceController.lyricRESTResult(m);
+                        break;
+                }
                 music = m;
                 update = true;
             } catch (Exception ex) {
@@ -154,9 +213,13 @@ public class LyricController implements Serializable {
 
     public void chartLyricREST(Music m) {
         if (!lyricFacade.existLyric(m, loggedUserMb.getUser())) {
-            this.originalLyric = webServiceController.songRESTResult(m);
-            music = m;
-            update = false;
+            try {
+                this.originalLyric = webServiceController.songRESTResult(m);
+                music = m;
+                update = false;
+            } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
+                Logger.getLogger(LyricController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             try {
                 this.selectLyric = lyricFacade.findLyric(m, loggedUserMb.getUser());

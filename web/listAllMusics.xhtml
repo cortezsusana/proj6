@@ -85,10 +85,10 @@ and open the template in the editor.
 
                             <h:column>
                                 <f:facet name="header">UPDATE LYRICS</f:facet>
-                                <p:commandButton value="Chart SOAP" action="#{lyricController.chartLyricSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>
-                                <p:commandButton value="Chart REST" action="#{lyricController.chartLyricREST(music)}" oncomplete="dialog1.show()" update=":d1"/>
-                                <p:commandButton value="Lyric SOAP" action="#{lyricController.lyricWikiSOAP(music)}" oncomplete="dialog1.show()" update=":d1"/>
-                                <p:commandButton value="Lyric REST" action="#{lyricController.lyricWikiREST(music)}" oncomplete="dialog1.show()" update=":d1"/>
+                                <p:commandButton value="Chart SOAP" action="#{lyricController.webServiceSOAP(music,'chartLyric')}" oncomplete="dialog1.show()" update=":d1"/>
+                                <p:commandButton value="Chart REST" action="#{lyricController.webServiceREST(music,'chartLyric')}" oncomplete="dialog1.show()" update=":d1"/>
+                                <p:commandButton value="Lyric SOAP" action="#{lyricController.webServiceSOAP(music,'LikiWiki')}" oncomplete="dialog1.show()" update=":d1"/>
+                                <p:commandButton value="Lyric REST" action="#{lyricController.webServiceREST(music,'LikiWiki')}" oncomplete="dialog1.show()" update=":d1"/>
                             </h:column>
 
                         </h:dataTable>
